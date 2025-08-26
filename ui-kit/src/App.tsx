@@ -2,6 +2,8 @@ import Button from "./components/button/Button";
 import Navbar from "./components/navbar/NavBar";
 import ButtonIcon from "./components/button/ButtonIcon";
 import Input from "./components/input/Input";
+import Textarea from "./components/input/Textarea";
+import React from "react";
 import {
   FaArrowRight,
   FaHeart,
@@ -12,6 +14,8 @@ import {
 } from "react-icons/fa";
 
 export default function App() {
+  const [bio, setBio] = React.useState("");
+  const [comment, setComment] = React.useState("");
   return (
     <div className="min-h-screen justify-center bg-gradient-to-r from-blue-100 via-white to-purple-100 p-6 flex flex-col items-center gap-8 ">
       <div className="flex justify-center gap-6 ">
@@ -110,6 +114,69 @@ export default function App() {
           placeholder="(00) 00000-0000"
           helperText="Digite apenas números"
           size="lg"
+        />
+      </div>
+
+      <div className="grid grid-cols-4 gap-6 items-center w-full max-w-4xl">
+        {/* Textarea padrão */}
+        <Textarea placeholder="Escreva sua mensagem aqui..." rows={4} />
+
+        {/* Textarea com label e contador */}
+        <Textarea
+          label="Biografia"
+          placeholder="Conte um pouco sobre você..."
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          maxLength={200}
+          showCount
+          helperText="Máximo de 200 caracteres"
+        />
+
+        {/* Textarea com erro */}
+        <Textarea
+          label="Comentário"
+          placeholder="Deixe seu comentário"
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          error={
+            comment.length < 10
+              ? "O comentário deve ter pelo menos 10 caracteres"
+              : ""
+          }
+          variant="filled"
+        />
+
+        {/* Textarea com sucesso */}
+        <Textarea
+          label="Mensagem de sucesso"
+          success="Mensagem enviada com sucesso!"
+          variant="outline"
+          rounded="lg"
+          value="Sua mensagem de exemplo aqui..."
+          readOnly
+        />
+
+        {/* Textarea desabilitado */}
+        <Textarea
+          label="Campo desabilitado"
+          placeholder="Este campo está desabilitado"
+          disabled
+          helperText="Você não pode editar este campo"
+        />
+
+        {/* Textarea sem redimensionamento */}
+        <Textarea
+          label="Sem redimensionamento"
+          placeholder="Esta textarea não pode ser redimensionada"
+          resize="none"
+          variant="flushed"
+        />
+
+        {/* Textarea estilo mínimo */}
+        <Textarea
+          placeholder="Estilo mínimo..."
+          variant="unstyled"
+          className="border-b border-gray-300 focus:border-blue-500"
         />
       </div>
     </div>

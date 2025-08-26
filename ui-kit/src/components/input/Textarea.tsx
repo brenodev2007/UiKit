@@ -67,7 +67,6 @@ export default function Textarea({
     unstyled: "border-0 focus:ring-0 p-0",
   };
 
-  // Tamanhos
   const sizes: Record<TextareaSize, string> = {
     sm: "px-2 py-1 text-sm",
     md: "px-3 py-2 text-base",
