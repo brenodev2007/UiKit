@@ -1,4 +1,5 @@
-import Button from "./components/Button";
+import Button from "./components/button/Button";
+import Navbar from "./components/navbar/NavBar";
 
 export default function App() {
   return (
@@ -22,6 +23,10 @@ export default function App() {
         <Button variant="outline" size="lg">
           Botão Outline
         </Button>
+      </div>
+
+      <div className="flex justify-center gap-6 ">
+        <Navbar />
       </div>
     </div>
   );
