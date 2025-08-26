@@ -1,5 +1,7 @@
 import Button from "./components/button/Button";
 import Navbar from "./components/navbar/NavBar";
+import ButtonIcon from "./components/button/ButtonIcon";
+import { FaArrowRight, FaHeart } from "react-icons/fa";
 
 export default function App() {
   return (
@@ -27,6 +29,20 @@ export default function App() {
 
       <div className="flex justify-center gap-6 ">
         <Navbar />
+      </div>
+
+      <div className="flex justify-center gap-6">
+        <ButtonIcon
+          icon={<FaArrowRight />}
+          variant="primary"
+          iconPosition="right"
+        />
+        <ButtonIcon icon={<FaHeart />} variant="outline" text="Favoritar" />
+        <ButtonIcon
+          icon={<FaHeart />}
+          variant="ghost"
+          aria-label="Configurações"
+        />
       </div>
     </div>
   );
