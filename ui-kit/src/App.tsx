@@ -3,7 +3,9 @@ import Navbar from "./components/navbar/NavBar";
 import ButtonIcon from "./components/button/ButtonIcon";
 import Input from "./components/input/Input";
 import Textarea from "./components/input/Textarea";
+import TextField from "./components/input/TextField";
 import React from "react";
+import { useState } from "react";
 import {
   FaArrowRight,
   FaHeart,
@@ -11,11 +13,18 @@ import {
   FaEnvelope,
   FaLock,
   FaUser,
+  FaEyeSlash,
+  FaEye,
+  FaPhone,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 export default function App() {
   const [bio, setBio] = React.useState("");
   const [comment, setComment] = React.useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
   return (
     <div className="min-h-screen justify-center bg-gradient-to-r from-blue-100 via-white to-purple-100 p-6 flex flex-col items-center gap-8 ">
       <div className="flex justify-center gap-6 ">
@@ -177,6 +186,86 @@ export default function App() {
           placeholder="Estilo mínimo..."
           variant="unstyled"
           className="border-b border-gray-300 focus:border-blue-500"
+        />
+      </div>
+
+      <div className="p-6 space-y-6 max-w-md mx-auto">
+        {/* Campo de busca com ícone */}
+        <TextField
+          placeholder="Buscar..."
+          icon={FaSearch}
+          variant="outline"
+          rounded="full"
+        />
+
+        {/* Campo de email com validação */}
+        <TextField
+          label="Email"
+          type="email"
+          placeholder="seu@email.com"
+          icon={FaEnvelope}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          error={email && !/\S+@\S+\.\S+/.test(email) ? "Email inválido" : ""}
+          required
+        />
+
+        {/* Campo de senha com ícone clicável */}
+        <TextField
+          label="Senha"
+          type={showPassword ? "text" : "password"}
+          placeholder="Digite sua senha"
+          icon={FaLock}
+          trailingIcon={showPassword ? FaEyeSlash : FaEye}
+          onTrailingIconClick={() => setShowPassword(!showPassword)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          variant="filled"
+          helperText="Mínimo de 8 caracteres"
+        />
+
+        {/* Campo com contador de caracteres */}
+        <TextField
+          label="Biografia"
+          placeholder="Conte sobre você..."
+          maxLength={150}
+          showCount
+          variant="outline"
+          rounded="lg"
+        />
+
+        {/* Campo desabilitado */}
+        <TextField
+          label="Usuário"
+          placeholder="nomedeusuário"
+          icon={FaUser}
+          value="johndoe"
+          disabled
+          helperText="Usuário não pode ser alterado"
+        />
+
+        {/* Campo de telefone */}
+        <TextField
+          label="Telefone"
+          type="tel"
+          placeholder="(00) 00000-0000"
+          icon={FaPhone}
+          variant="flushed"
+        />
+
+        {/* Campo de data */}
+        <TextField
+          label="Data de nascimento"
+          icon={FaCalendarAlt}
+          iconPosition="right"
+        />
+
+        {/* Campo de sucesso */}
+        <TextField
+          label="Código de verificação"
+          value="ABC123"
+          success="Código verificado com sucesso!"
+          readOnly
         />
       </div>
     </div>
