@@ -20,14 +20,14 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed w-full transition-all duration-300 ${
+      className={` w-full transition-all duration-300  ${
         scrolled
           ? "bg-white/95 backdrop-blur-sm shadow-lg py-2"
           : "bg-white/80 backdrop-blur-sm py-4"
       }`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <h1 className="font-bold text-2xl text-blue-600 transition-transform duration-300 hover:scale-105">
+        <h1 className="font-bold text-2xl text-blue-600 transition-transform duration-300 hover:scale-105 mr-5">
           My<span className="text-blue-800">UI</span>
         </h1>
 
@@ -55,7 +55,6 @@ export default function Navbar() {
           </a>
         </div>
 
-        {/* Botão de menu mobile */}
         <button
           className="md:hidden flex flex-col justify-center items-center w-10 h-10 relative focus:outline-none"
           onClick={() => setOpen(!open)}
@@ -78,7 +77,6 @@ export default function Navbar() {
           ></span>
         </button>
 
-        {/* Menu mobile com animação */}
         <div
           className={`md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-md shadow-lg overflow-hidden transition-all duration-500 ease-in-out ${
             open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
