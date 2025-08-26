@@ -4,6 +4,7 @@ import ButtonIcon from "./components/button/ButtonIcon";
 import Checkbox from "./components/input/CheckBox";
 import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
+import Toggle from "./components/input/Toggle";
 import React from "react";
 import { RadioGroup } from "./components/input/RadioGroup";
 import { Radio } from "./components/input/Radio";
@@ -19,6 +20,10 @@ import {
   FaEye,
   FaPhone,
   FaCalendarAlt,
+  FaMoon,
+  FaBell,
+  FaWifi,
+  FaBluetooth,
 } from "react-icons/fa";
 
 export default function App() {
@@ -26,6 +31,12 @@ export default function App() {
   const [comment, setComment] = React.useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const [notifications, setNotifications] = useState(false);
+  const [wifi, setWifi] = useState(true);
+  const [bluetooth, setBluetooth] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const [airplaneMode, setAirplaneMode] = useState(false);
   const [email, setEmail] = useState("");
   const [checked, setChecked] = useState(false);
   const [options, setOptions] = useState({
@@ -359,6 +370,147 @@ export default function App() {
             Valor selecionado no primeiro grupo:{" "}
             <strong>{selectedValue}</strong>
           </p>
+        </div>
+      </div>
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-md mx-auto space-y-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            Configurações
+          </h1>
+
+          {/* Cada toggle com seu próprio estado e handler */}
+          <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <Toggle
+              checked={notifications}
+              onChange={setNotifications}
+              label={
+                <div className="flex items-center gap-2">
+                  <FaBell className="w-4 h-4" />
+                  Notificações
+                </div>
+              }
+              variant="primary"
+              withIcons
+            />
+
+            <Toggle
+              checked={wifi}
+              onChange={setWifi}
+              label={
+                <div className="flex items-center gap-2">
+                  <FaWifi className="w-4 h-4" />
+                  Wi-Fi
+                </div>
+              }
+              variant="success"
+              withIcons
+            />
+
+            <Toggle
+              checked={bluetooth}
+              onChange={setBluetooth}
+              label={
+                <div className="flex items-center gap-2">
+                  <FaBluetooth className="w-4 h-4" />
+                  Bluetooth
+                </div>
+              }
+              variant="warning"
+              withIcons
+            />
+
+            <Toggle
+              checked={darkMode}
+              onChange={setDarkMode}
+              label={
+                <div className="flex items-center gap-2">
+                  <FaMoon className="w-4 h-4" />
+                  Modo Escuro
+                </div>
+              }
+              variant="neutral"
+              withIcons
+            />
+
+            <Toggle
+              checked={airplaneMode}
+              onChange={setAirplaneMode}
+              label="Modo Avião"
+              variant="danger"
+              withIcons
+              onIcon="✈"
+              offIcon="✈"
+            />
+          </div>
+
+          {/* Grupo de toggles com diferentes tamanhos */}
+          <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <h2 className="font-medium text-gray-700">Tamanhos</h2>
+
+            <Toggle
+              checked={true}
+              onChange={() => {}}
+              label="Pequeno"
+              size="sm"
+            />
+
+            <Toggle
+              checked={true}
+              onChange={() => {}}
+              label="Médio"
+              size="md"
+            />
+
+            <Toggle
+              checked={true}
+              onChange={() => {}}
+              label="Grande"
+              size="lg"
+            />
+          </div>
+
+          {/* Toggles desabilitados */}
+          <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <h2 className="font-medium text-gray-700">Desabilitados</h2>
+
+            <Toggle
+              checked={true}
+              onChange={() => {}}
+              label="Ativo (desabilitado)"
+              disabled
+            />
+
+            <Toggle
+              checked={false}
+              onChange={() => {}}
+              label="Inativo (desabilitado)"
+              disabled
+            />
+          </div>
+
+          {/* Toggles sem labels */}
+          <div className="bg-white rounded-lg shadow p-4 space-y-4">
+            <h2 className="font-medium text-gray-700">Sem Labels Visíveis</h2>
+
+            <div className="flex gap-4">
+              <Toggle
+                checked={true}
+                onChange={() => {}}
+                aria-label="Toggle 1"
+              />
+              <Toggle
+                checked={false}
+                onChange={() => {}}
+                aria-label="Toggle 2"
+              />
+              <Toggle
+                checked={true}
+                onChange={() => {}}
+                disabled
+                aria-label="Toggle 3 desabilitado"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
