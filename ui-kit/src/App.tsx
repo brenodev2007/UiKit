@@ -1,7 +1,7 @@
 import Button from "./components/button/Button";
 import Navbar from "./components/navbar/NavBar";
 import ButtonIcon from "./components/button/ButtonIcon";
-import Input from "./components/input/Input";
+import Checkbox from "./components/input/CheckBox";
 import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
 import React from "react";
@@ -25,6 +25,17 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [options, setOptions] = useState({
+    email: true,
+    sms: false,
+    push: false,
+  });
+
+  const handleOptionChange = (option: string, isChecked: boolean) => {
+    setOptions((prev) => ({ ...prev, [option]: isChecked }));
+  };
+
   return (
     <div className="min-h-screen justify-center bg-gradient-to-r from-blue-100 via-white to-purple-100 p-6 flex flex-col items-center gap-8 ">
       <div className="flex justify-center gap-6 ">
@@ -73,56 +84,6 @@ export default function App() {
           icon={<FaHeart />}
           variant="ghost"
           aria-label="Configurações"
-        />
-      </div>
-
-      <div className="p-6 space-y-6 max-w-md mx-auto">
-        {/* Input padrão */}
-        <Input placeholder="Buscar..." icon={FaSearch} />
-
-        {/* Input com label e erro */}
-        <Input
-          label="Email"
-          type="email"
-          placeholder="seu@email.com"
-          icon={FaEnvelope}
-          error="Email inválido"
-          required
-        />
-
-        {/* Input de senha */}
-        <Input
-          label="Senha"
-          type="password"
-          placeholder="Digite sua senha"
-          icon={FaLock}
-          variant="filled"
-        />
-
-        {/* Input com sucesso */}
-        <Input
-          label="Nome de usuário"
-          placeholder="Seu nome de usuário"
-          icon={FaUser}
-          success="Nome disponível"
-          variant="flushed"
-        />
-
-        {/* Input desabilitado */}
-        <Input
-          placeholder="Campo desabilitado"
-          disabled
-          variant="outline"
-          rounded="full"
-        />
-
-        {/* Input sem ícone */}
-        <Input
-          label="Telefone"
-          type="tel"
-          placeholder="(00) 00000-0000"
-          helperText="Digite apenas números"
-          size="lg"
         />
       </div>
 
@@ -266,6 +227,76 @@ export default function App() {
           value="ABC123"
           success="Código verificado com sucesso!"
           readOnly
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-4 p-10 mx-auto">
+        {/* Uso controlado simples */}
+        <Checkbox
+          label="Termos e condições"
+          checked={checked}
+          onChange={(isChecked) => setChecked(isChecked)}
+          variant="primary"
+          animation="bounce"
+        />
+
+        {/* Com diferentes variantes */}
+        <Checkbox
+          label="Notificação por email"
+          variant="success"
+          size="lg"
+          checked={options.email}
+          onChange={(isChecked) => handleOptionChange("email", isChecked)}
+          rounded="full"
+        />
+
+        {/* Com estado de erro */}
+        <Checkbox
+          label="Política de privacidade"
+          variant="danger"
+          error="Você deve aceitar a política"
+          required
+        />
+
+        {/* Com estado de sucesso */}
+        <Checkbox
+          label="Configuração salva"
+          variant="success"
+          success="Configuração aplicada com sucesso"
+          checked={true}
+          readOnly
+        />
+
+        {/* Desabilitado */}
+        <Checkbox
+          label="Opção premium"
+          variant="warning"
+          disabled
+          helperText="Disponível em planos superiores"
+        />
+
+        {/* Indeterminado */}
+        <Checkbox
+          label="Selecionar todos"
+          indeterminate={true}
+          helperText="Alguns itens selecionados"
+        />
+
+        {/* Customizado com classes adicionais */}
+        <Checkbox
+          label="Checkbox personalizado"
+          containerClassName="bg-gray-50 p-4 rounded-lg"
+          labelClassName="font-bold text-purple-700"
+          className="items-center"
+          variant="primary"
+          rounded="full"
+        />
+
+        {/* Sem label visual (apenas aria) */}
+        <Checkbox
+          aria-label="Checkbox acessível"
+          checked={checked}
+          onChange={(isChecked) => setChecked(isChecked)}
         />
       </div>
     </div>
