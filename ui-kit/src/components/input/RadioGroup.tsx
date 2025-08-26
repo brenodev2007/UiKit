@@ -15,7 +15,6 @@ interface RadioGroupProps {
   orientation?: "vertical" | "horizontal";
 }
 
-// Interface para as props esperadas dos filhos Radio
 interface RadioOptionProps {
   value: string;
   disabled?: boolean;
