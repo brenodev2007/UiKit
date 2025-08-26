@@ -5,6 +5,8 @@ import Checkbox from "./components/input/CheckBox";
 import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
 import React from "react";
+import { RadioGroup } from "./components/input/RadioGroup";
+import { Radio } from "./components/input/Radio";
 import { useState } from "react";
 import {
   FaArrowRight,
@@ -31,6 +33,7 @@ export default function App() {
     sms: false,
     push: false,
   });
+  const [selectedValue, setSelectedValue] = React.useState("option1");
 
   const handleOptionChange = (option: string, isChecked: boolean) => {
     setOptions((prev) => ({ ...prev, [option]: isChecked }));
@@ -298,6 +301,65 @@ export default function App() {
           checked={checked}
           onChange={(isChecked) => setChecked(isChecked)}
         />
+      </div>
+
+      <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold mb-6">Exemplo de RadioGroup</h1>
+
+        {/* RadioGroup controlado */}
+        <RadioGroup
+          label="Escolha uma opção"
+          value={selectedValue}
+          onChange={setSelectedValue}
+          helperText="Selecione a melhor opção para você"
+          className="mb-6"
+        >
+          <Radio value="option1">Opção 1</Radio>
+          <Radio value="option2">Opção 2</Radio>
+          <Radio value="option3">Opção 3</Radio>
+        </RadioGroup>
+
+        {/* RadioGroup não controlado com defaultValue */}
+        <RadioGroup
+          label="Escolha outro grupo"
+          defaultValue="default2"
+          onChange={(value) => console.log("Selecionado:", value)}
+          orientation="horizontal"
+          className="mb-6"
+        >
+          <Radio value="default1">Padrão 1</Radio>
+          <Radio value="default2">Padrão 2</Radio>
+          <Radio value="default3">Padrão 3</Radio>
+        </RadioGroup>
+
+        {/* RadioGroup com erro */}
+        <RadioGroup
+          label="Opção obrigatória"
+          error="Este campo é obrigatório"
+          required
+          className="mb-6"
+        >
+          <Radio value="required1">Obrigatório 1</Radio>
+          <Radio value="required2">Obrigatório 2</Radio>
+        </RadioGroup>
+
+        {/* RadioGroup desabilitado */}
+        <RadioGroup
+          label="Opções desabilitadas"
+          disabled
+          helperText="Este grupo está desativado"
+        >
+          <Radio value="disabled1">Desabilitado 1</Radio>
+          <Radio value="disabled2">Desabilitado 2</Radio>
+        </RadioGroup>
+
+        {/* Estado atual selecionado */}
+        <div className="mt-6 p-4 bg-gray-50 rounded">
+          <p className="text-sm text-gray-600">
+            Valor selecionado no primeiro grupo:{" "}
+            <strong>{selectedValue}</strong>
+          </p>
+        </div>
       </div>
     </div>
   );
