@@ -31,198 +31,132 @@ export default function Toggle({
   name,
   value,
 }: ToggleProps) {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!disabled && onChange) {
-      onChange(event.target.checked);
-    }
+  const handleChange = () => {
+    if (!disabled) onChange?.(!checked);
   };
 
   // Configurações de tamanho
   const sizeStyles = {
     sm: {
-      container: "w-8 h-4",
-      thumb: "w-3 h-3",
-      thumbChecked: "translate-x-4",
-      text: "text-xs",
-      icon: "text-[8px]",
-    },
-    md: {
       container: "w-10 h-5",
       thumb: "w-4 h-4",
-      thumbChecked: "translate-x-5",
-      text: "text-sm",
-      icon: "text-[10px]",
+      translate: "translate-x-5",
+      icon: "text-xs",
+    },
+    md: {
+      container: "w-14 h-7",
+      thumb: "w-6 h-6",
+      translate: "translate-x-7",
+      icon: "text-sm",
     },
     lg: {
-      container: "w-12 h-6",
-      thumb: "w-5 h-5",
-      thumbChecked: "translate-x-6",
-      text: "text-base",
-      icon: "text-[12px]",
+      container: "w-16 h-8",
+      thumb: "w-7 h-7",
+      translate: "translate-x-8",
+      icon: "text-base",
     },
   };
 
-  // Configurações de variante
+  // Variantes de cores
   const variantStyles = {
     primary: {
-      background: "bg-blue-600",
-      backgroundDisabled: "bg-blue-300",
+      on: "bg-blue-600",
+      off: "bg-gray-300",
       thumb: "bg-white",
-      text: "text-blue-600",
+      icon: "text-white",
     },
     success: {
-      background: "bg-green-600",
-      backgroundDisabled: "bg-green-300",
+      on: "bg-green-600",
+      off: "bg-gray-300",
       thumb: "bg-white",
-      text: "text-green-600",
+      icon: "text-white",
     },
     danger: {
-      background: "bg-red-600",
-      backgroundDisabled: "bg-red-300",
+      on: "bg-red-600",
+      off: "bg-gray-300",
       thumb: "bg-white",
-      text: "text-red-600",
+      icon: "text-white",
     },
     warning: {
-      background: "bg-yellow-500",
-      backgroundDisabled: "bg-yellow-300",
+      on: "bg-yellow-500",
+      off: "bg-gray-300",
       thumb: "bg-white",
-      text: "text-yellow-600",
+      icon: "text-white",
     },
     neutral: {
-      background: "bg-gray-600",
-      backgroundDisabled: "bg-gray-300",
+      on: "bg-gray-600",
+      off: "bg-gray-300",
       thumb: "bg-white",
-      text: "text-gray-600",
+      icon: "text-white",
     },
   };
+
+  const currentVariant = variantStyles[variant];
 
   const LabelComponent = label ? (
     <span
-      className={`
-        ${sizeStyles[size].text}
-        font-medium
-        ${disabled ? "text-gray-400" : "text-gray-700"}
-        ${disabled ? "cursor-not-allowed" : "cursor-pointer"}
-      `}
-      onClick={() => !disabled && onChange?.(!checked)}
+      className={`font-medium ${sizeStyles[size].icon} ${
+        disabled ? "text-gray-400" : "text-gray-700"
+      } ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+      onClick={handleChange}
     >
       {label}
     </span>
   ) : null;
 
   return (
-    <label
-      className={`
-        flex items-center
-        ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}
-        ${className}
-        gap-3
-      `}
-    >
-      {/* Label à esquerda */}
+    <div className={`flex items-center gap-2 ${className}`}>
       {label && labelPosition === "left" && LabelComponent}
 
-      {/* Input escondido */}
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled}
-        name={name}
-        value={value}
-        className="sr-only"
-      />
-
-      {/* Toggle Switch customizado */}
-      <span
-        className={`
-          relative
-          rounded-full
-          transition-colors
-          duration-300
-          flex
-          items-center
-          ${sizeStyles[size].container}
-          ${
-            checked
-              ? disabled
-                ? variantStyles[variant].backgroundDisabled
-                : variantStyles[variant].background
-              : "bg-gray-300"
-          }
-        `}
+      <div
+        onClick={handleChange}
+        className={`relative flex items-center transition-colors duration-300 rounded-full cursor-pointer ${
+          disabled ? "opacity-60 cursor-not-allowed" : ""
+        } ${checked ? currentVariant.on : currentVariant.off} ${
+          sizeStyles[size].container
+        }`}
       >
-        {/* Ícones dentro do toggle */}
+        {/* Ícones opcionais dentro do toggle */}
         {withIcons && (
           <>
             <span
-              className={`
-                absolute
-                left-1
-                ${sizeStyles[size].icon}
-                font-bold
-                text-white
-                transition-opacity
-                duration-300
-                ${checked ? "opacity-0" : "opacity-100"}
-              `}
+              className={`absolute left-1 transition-opacity duration-300 ${
+                checked ? "opacity-0" : "opacity-100"
+              } ${sizeStyles[size].icon} font-bold ${currentVariant.icon}`}
             >
               {offIcon}
             </span>
             <span
-              className={`
-                absolute
-                right-1
-                ${sizeStyles[size].icon}
-                font-bold
-                text-white
-                transition-opacity
-                duration-300
-                ${checked ? "opacity-100" : "opacity-0"}
-              `}
+              className={`absolute right-1 transition-opacity duration-300 ${
+                checked ? "opacity-100" : "opacity-0"
+              } ${sizeStyles[size].icon} font-bold ${currentVariant.icon}`}
             >
               {onIcon}
             </span>
           </>
         )}
 
-        {/* Thumb (bolinha) */}
+        {/* Thumb */}
         <span
-          className={`
-            absolute
-            rounded-full
-            transition-all
-            duration-300
-            ${variantStyles[variant].thumb}
-            ${sizeStyles[size].thumb}
-            top-1/2
-            -translate-y-1/2
-            left-0.5
-            ${checked ? sizeStyles[size].thumbChecked : "translate-x-0"}
-            shadow-md
-            ${!disabled && "hover:scale-110"}
-            flex
-            items-center
-            justify-center
-          `}
+          className={`absolute top-1/2 -translate-y-1/2 left-0.5 rounded-full ${
+            currentVariant.thumb
+          } transition-transform duration-300 shadow-md
+            ${sizeStyles[size].thumb} ${
+            checked ? sizeStyles[size].translate : "translate-x-0"
+          } 
+            ${
+              !disabled ? "hover:scale-110" : ""
+            } flex items-center justify-center`}
         >
-          {/* Ícone no thumb */}
           {withIcons && (
-            <span
-              className={`
-                ${sizeStyles[size].icon}
-                font-bold
-                ${variantStyles[variant].text}
-              `}
-            >
+            <span className={`${sizeStyles[size].icon} font-bold`}>
               {checked ? onIcon : offIcon}
             </span>
           )}
         </span>
-      </span>
+      </div>
 
-      {/* Label à direita */}
       {label && labelPosition === "right" && LabelComponent}
-    </label>
+    </div>
   );
 }

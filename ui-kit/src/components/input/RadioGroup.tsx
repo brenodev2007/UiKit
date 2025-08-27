@@ -1,7 +1,8 @@
 import React from "react";
+import type { Radio, RadioProps } from "./Radio";
 
 interface RadioGroupProps {
-  children: React.ReactNode;
+  children: React.ReactElement<RadioProps>[] | React.ReactElement<RadioProps>;
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
@@ -13,15 +14,6 @@ interface RadioGroupProps {
   disabled?: boolean;
   className?: string;
   orientation?: "vertical" | "horizontal";
-}
-
-interface RadioOptionProps {
-  value: string;
-  disabled?: boolean;
-  children?: React.ReactNode;
-  name?: string;
-  checked?: boolean;
-  onChange?: (value: string) => void;
 }
 
 export function RadioGroup({
@@ -44,20 +36,16 @@ export function RadioGroup({
   const groupName = name || `radio-group-${React.useId()}`;
 
   const handleChange = (newValue: string) => {
-    if (!isControlled) {
-      setInternalValue(newValue);
-    }
-    if (onChange) {
-      onChange(newValue);
-    }
+    if (!isControlled) setInternalValue(newValue);
+    onChange?.(newValue);
   };
 
   const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement<RadioOptionProps>(child)) {
+    if (React.isValidElement<RadioProps>(child)) {
       return React.cloneElement(child, {
         name: groupName,
         checked: child.props.value === actualValue,
-        onChange: (val: string) => handleChange(val),
+        onChange: handleChange,
         disabled: disabled || child.props.disabled,
       });
     }
@@ -68,31 +56,24 @@ export function RadioGroup({
     <div className={className}>
       {label && (
         <legend
-          className={`
-          block text-sm font-medium mb-2
-          ${error ? "text-red-600" : "text-gray-700"}
-          ${disabled ? "text-gray-400" : ""}
-        `}
+          className={`block text-sm font-medium mb-2 ${
+            error ? "text-red-600" : "text-gray-700"
+          } ${disabled ? "text-gray-400" : ""}`}
         >
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </legend>
       )}
-
       <div
-        className={`
-        ${orientation === "horizontal" ? "flex flex-wrap gap-4" : "space-y-2"}
-      `}
+        className={
+          orientation === "horizontal" ? "flex flex-wrap gap-4" : "space-y-2"
+        }
       >
         {childrenWithProps}
       </div>
-
       {(error || helperText) && (
         <p
-          className={`
-          text-sm mt-1
-          ${error ? "text-red-500" : "text-gray-500"}
-        `}
+          className={`text-sm mt-1 ${error ? "text-red-500" : "text-gray-500"}`}
         >
           {error || helperText}
         </p>

@@ -1,35 +1,29 @@
 import { useState } from "react";
-import Tooltip from "./components/feedbacks/Tooltip";
-import Button from "./components/button/Button";
+import Toggle from "./components/input/Toggle";
 
 export default function App() {
-  const [clickCount, setClickCount] = useState(0);
+  const [toggleValue, setToggleValue] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-6 p-6 bg-gray-100">
-      {/* Tooltip no hover */}
-      <Tooltip content="Este é um botão de teste" position="top" delay={300}>
-        <Button variant="primary" size="md">
-          Hover aqui
-        </Button>
-      </Tooltip>
+    <div className="p-8 space-y-8 max-w-md mx-auto font-sans">
+      <h1 className="text-2xl font-bold mb-4">Componentes Teste</h1>
 
-      {/* Tooltip em texto */}
-      <Tooltip content="Mensagem explicativa" position="right">
-        <span className="underline cursor-pointer text-blue-600">
-          Passe o mouse aqui
-        </span>
-      </Tooltip>
-
-      {/* Tooltip com ação de click */}
-      <Tooltip content={`Você clicou ${clickCount} vezes`} position="bottom">
-        <Button
-          variant="secondary"
-          onClick={() => setClickCount((prev) => prev + 1)}
-        >
-          Clique aqui
-        </Button>
-      </Tooltip>
+      {/* Toggle */}
+      <div className="space-y-2">
+        <h2 className="font-semibold">Toggle</h2>
+        <Toggle
+          checked={toggleValue}
+          onChange={setToggleValue}
+          label="Ativar recurso"
+          labelPosition="right"
+          withIcons
+          onIcon="✓"
+          offIcon="✕"
+          variant="primary"
+          size="md"
+        />
+        <p>Estado: {toggleValue ? "Ativado" : "Desativado"}</p>
+      </div>
     </div>
   );
 }
