@@ -6,6 +6,10 @@ import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
 import Toggle from "./components/input/Toggle";
 import Select from "./components/input/SelectDropDown";
+import Sidebar from "./components/navbar/SideBar";
+import Breadcrumbs from "./components/navbar/Breadcrumbs";
+import Tabs from "./components/navbar/Tabs";
+import Pagination from "./components/navbar/Pagination";
 import Card, {
   CardHeader,
   CardTitle,
@@ -48,7 +52,8 @@ export default function App() {
   const [comment, setComment] = React.useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
   const [notifications, setNotifications] = useState(false);
   const [wifi, setWifi] = useState(true);
   const [bluetooth, setBluetooth] = useState(false);
@@ -61,6 +66,30 @@ export default function App() {
     sms: false,
     push: false,
   });
+
+  const breadcrumbItems = [
+    { label: "Dashboard", href: "#" },
+    { label: "Users", href: "#" },
+    { label: "List", href: "#" },
+  ];
+
+  const tabs = [
+    {
+      id: "overview",
+      label: "Visão Geral",
+      content: <div className="p-4">Conteúdo da visão geral...</div>,
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      content: <div className="p-4">Conteúdo de analytics...</div>,
+    },
+    {
+      id: "reports",
+      label: "Relatórios",
+      content: <div className="p-4">Conteúdo de relatórios...</div>,
+    },
+  ];
 
   const [multipleValues, setMultipleValues] = useState({
     user: "",
@@ -106,9 +135,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen justify-center bg-gradient-to-r from-blue-100 via-white to-purple-100 p-6 flex flex-col items-center gap-8 ">
-      <div className="flex justify-center gap-6 ">
-        <Navbar />
-      </div>
       <h1 className="text-4xl font-extrabold text-blue-600 text-center animate-bounce">
         🚀 UI Kit React + Tailwind
       </h1>
@@ -838,6 +864,40 @@ export default function App() {
               </CardContent>
             </Card>
           </div>
+        </div>
+      </div>
+
+      <div className="min-h-screen bg-gray-50">
+        <Navbar />
+
+        <div className="flex">
+          <Sidebar
+            isOpen={isSidebarOpen}
+            onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+          />
+
+          <main className="flex-1 p-6">
+            <Breadcrumbs
+              items={breadcrumbItems}
+              homeIcon={true}
+              className="mb-6"
+            />
+
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
+
+            <Tabs tabs={tabs} variant="underline" className="mb-8" />
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h2 className="text-lg font-semibold mb-4">Lista de Itens</h2>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={10}
+                onPageChange={setCurrentPage}
+                size="md"
+                className="mt-6"
+              />
+            </div>
+          </main>
         </div>
       </div>
     </div>
