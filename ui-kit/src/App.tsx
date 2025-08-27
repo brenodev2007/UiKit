@@ -1,3 +1,7 @@
 export default function App() {
-  return <div className="p-4">UI Kit</div>;
+  return (
+    <div className="App">
+      <h1>UiKit</h1>
+    </div>
+  );
 }

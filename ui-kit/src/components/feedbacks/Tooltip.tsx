@@ -30,14 +30,16 @@ export default function Tooltip({
   className = "",
 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showTooltip = () => {
     timeoutRef.current = setTimeout(() => setIsVisible(true), delay);
   };
 
   const hideTooltip = () => {
-    clearTimeout(timeoutRef.current);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     setIsVisible(false);
   };
 
