@@ -7,7 +7,8 @@ type Variant =
   | "outline"
   | "ghost"
   | "danger"
-  | "success";
+  | "success"
+  | "icon";
 type Size = "xs" | "sm" | "md" | "lg" | "xl";
 type Rounded = "none" | "sm" | "md" | "lg" | "full";
 type Shadow = "none" | "sm" | "md" | "lg" | "xl";
@@ -59,6 +60,7 @@ export default function Button({
       "bg-red-600 text-white hover:bg-red-700 active:scale-95 focus:ring-red-500 active:bg-red-800 dark:bg-red-500",
     success:
       "bg-green-600 text-white hover:bg-green-700 active:scale-95 focus:ring-green-500 active:bg-green-800 dark:bg-green-500",
+    icon: "p-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 flex items-center justify-center",
   };
 
   const sizes: Record<Size, string> = {
