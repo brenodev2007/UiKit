@@ -1,7 +1,6 @@
 import React from "react";
 
 export type CardVariant = "default" | "elevated" | "outlined" | "filled";
-
 export type CardSize = "sm" | "md" | "lg";
 
 export interface CardProps {
@@ -24,20 +23,20 @@ export default function Card({
   onClick,
 }: CardProps) {
   const variantStyles = {
-    default: "bg-white border border-gray-200",
-    elevated: "bg-white shadow-md",
-    outlined: "border-2 border-gray-200 bg-transparent",
-    filled: "bg-gray-50 border border-gray-100",
+    default:
+      "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700",
+    elevated: "bg-white dark:bg-gray-800 shadow-md",
+    outlined: "border-2 border-gray-200 dark:border-gray-600 bg-transparent",
+    filled:
+      "bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-700",
   };
 
-  // Configurações de tamanho
   const sizeStyles = {
     sm: "p-4",
     md: "p-6",
     lg: "p-8",
   };
 
-  // Configurações de arredondamento
   const roundedStyles = {
     none: "rounded-none",
     sm: "rounded-sm",
@@ -47,12 +46,19 @@ export default function Card({
     "2xl": "rounded-2xl",
   };
 
-  // Efeitos hover
   const hoverStyles = {
     none: "",
     scale: "transition-transform duration-200 hover:scale-[1.02]",
     shadow: "transition-shadow duration-200 hover:shadow-lg",
     lift: "transition-transform duration-200 hover:-translate-y-1",
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!onClick) return;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
   };
 
   return (
@@ -62,11 +68,12 @@ export default function Card({
         ${sizeStyles[size]}
         ${roundedStyles[rounded]}
         ${hoverStyles[hoverEffect]}
-        ${onClick ? "cursor-pointer" : ""}
+        ${onClick ? "cursor-pointer active:scale-[0.98]" : ""}
         ${className}
         transition-all duration-200
       `}
       onClick={onClick}
+      onKeyDown={handleKeyPress}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}
     >
@@ -75,75 +82,78 @@ export default function Card({
   );
 }
 
-// Componente CardHeader
-export interface CardHeaderProps {
+// Header
+export function CardHeader({
+  children,
+  className = "",
+}: {
   children: React.ReactNode;
   className?: string;
-}
-
-export function CardHeader({ children, className = "" }: CardHeaderProps) {
+}) {
   return <div className={`mb-4 ${className}`}>{children}</div>;
 }
 
-// Componente CardTitle
-export interface CardTitleProps {
-  children: React.ReactNode;
-  className?: string;
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-}
-
+// Title
 export function CardTitle({
   children,
   className = "",
   as: Tag = "h3",
-}: CardTitleProps) {
+}: {
+  children: React.ReactNode;
+  className?: string;
+  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+}) {
   return (
-    <Tag className={`font-semibold text-gray-900 ${className}`}>{children}</Tag>
+    <Tag
+      className={`font-semibold text-gray-900 dark:text-gray-100 ${className}`}
+    >
+      {children}
+    </Tag>
   );
 }
 
-// Componente CardDescription
-export interface CardDescriptionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
+// Description
 export function CardDescription({
   children,
   className = "",
-}: CardDescriptionProps) {
-  return <p className={`text-gray-600 mt-1 ${className}`}>{children}</p>;
-}
-
-// Componente CardContent
-export interface CardContentProps {
+}: {
   children: React.ReactNode;
   className?: string;
+}) {
+  return (
+    <p className={`text-gray-600 dark:text-gray-400 mt-1 ${className}`}>
+      {children}
+    </p>
+  );
 }
 
-export function CardContent({ children, className = "" }: CardContentProps) {
+// Content
+export function CardContent({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return <div className={className}>{children}</div>;
 }
 
-// Componente CardFooter
-export interface CardFooterProps {
-  children: React.ReactNode;
-  className?: string;
-  align?: "left" | "center" | "right" | "between";
-}
-
+// Footer
 export function CardFooter({
   children,
   className = "",
   align = "left",
-}: CardFooterProps) {
+}: {
+  children: React.ReactNode;
+  className?: string;
+  align?: "left" | "center" | "right" | "between";
+}) {
   const alignStyles = {
     left: "justify-start",
     center: "justify-center",
     right: "justify-end",
     between: "justify-between",
   };
-
   return (
     <div className={`mt-6 flex ${alignStyles[align]} ${className}`}>
       {children}
@@ -151,58 +161,67 @@ export function CardFooter({
   );
 }
 
-// Componente CardImage
-export interface CardImageProps {
-  src: string;
-  alt: string;
-  className?: string;
-  height?: string;
-  width?: string;
-}
-
+// Image
 export function CardImage({
   src,
   alt,
   className = "",
-  height = "auto",
-  width = "100%",
-}: CardImageProps) {
+  aspect = "16/9",
+  rounded = "lg",
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+  aspect?: string;
+  rounded?: "none" | "sm" | "md" | "lg" | "xl" | "2xl";
+}) {
+  const roundedMap = {
+    none: "rounded-none",
+    sm: "rounded-sm",
+    md: "rounded-md",
+    lg: "rounded-lg",
+    xl: "rounded-xl",
+    "2xl": "rounded-2xl",
+  };
   return (
-    <div className="overflow-hidden">
+    <div
+      className={`overflow-hidden ${roundedMap[rounded]}`}
+      style={{ aspectRatio: aspect }}
+    >
       <img
         src={src}
         alt={alt}
-        className={`w-full object-cover ${className}`}
-        style={{ height, width }}
+        className={`w-full h-full object-cover ${className}`}
       />
     </div>
   );
 }
 
-// Componente CardAvatar
-export interface CardAvatarProps {
-  src: string;
-  alt: string;
-  size?: "sm" | "md" | "lg";
-  className?: string;
-}
-
+// Avatar
 export function CardAvatar({
   src,
   alt,
   size = "md",
   className = "",
-}: CardAvatarProps) {
+}: {
+  src: string;
+  alt: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}) {
   const sizeStyles = {
     sm: "h-12 w-12",
     md: "h-16 w-16",
     lg: "h-20 w-20",
   };
-
   return (
     <img
       src={src}
       alt={alt}
+      onError={(e) => {
+        (e.currentTarget as HTMLImageElement).src =
+          "https://via.placeholder.com/150";
+      }}
       className={`${sizeStyles[size]} rounded-full object-cover ${className}`}
     />
   );
