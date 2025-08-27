@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 type Variant =
   | "primary"
@@ -47,17 +48,17 @@ export default function Button({
 
   const variants: Record<Variant, string> = {
     primary:
-      "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800",
+      "bg-blue-600 text-white hover:bg-blue-700 active:scale-95 focus:ring-blue-500 active:bg-blue-800 dark:bg-blue-500 dark:hover:bg-blue-600",
     secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500 active:bg-gray-400",
+      "bg-gray-200 text-gray-800 hover:bg-gray-300 active:scale-95 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100",
     outline:
-      "border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-400 active:bg-gray-100",
+      "border border-gray-300 text-gray-700 hover:bg-gray-50 active:scale-95 focus:ring-gray-400 active:bg-gray-100 dark:border-gray-600 dark:text-gray-200",
     ghost:
-      "text-gray-700 hover:bg-gray-100 focus:ring-gray-400 active:bg-gray-200",
+      "text-gray-700 hover:bg-gray-100 active:scale-95 focus:ring-gray-400 dark:text-gray-200 dark:hover:bg-gray-700",
     danger:
-      "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 active:bg-red-800",
+      "bg-red-600 text-white hover:bg-red-700 active:scale-95 focus:ring-red-500 active:bg-red-800 dark:bg-red-500",
     success:
-      "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500 active:bg-green-800",
+      "bg-green-600 text-white hover:bg-green-700 active:scale-95 focus:ring-green-500 active:bg-green-800 dark:bg-green-500",
   };
 
   const sizes: Record<Size, string> = {
@@ -101,10 +102,13 @@ export default function Button({
   }`;
 
   return (
-    <button
+    <motion.button
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
+      whileTap={!disabled && !loading ? { scale: 0.95 } : {}}
+      aria-disabled={disabled}
+      aria-busy={loading}
       className={`
         ${base}
         ${variants[variant]}
@@ -144,7 +148,9 @@ export default function Button({
       )}
 
       <span
-        className={`flex items-center ${loading ? "opacity-0" : "opacity-100"}`}
+        className={`flex items-center transition-opacity ${
+          loading ? "opacity-0" : "opacity-100"
+        }`}
       >
         {icon && iconPosition === "left" && (
           <span className={iconClasses}>{icon}</span>
@@ -154,6 +160,6 @@ export default function Button({
           <span className={iconClasses}>{icon}</span>
         )}
       </span>
-    </button>
+    </motion.button>
   );
 }

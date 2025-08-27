@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 type Variant = "primary" | "secondary" | "outline" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
@@ -6,7 +7,6 @@ type IconPosition = "left" | "right";
 type Rounded = "sm" | "md" | "lg" | "full";
 
 interface ButtonIconProps {
-  children?: React.ReactNode;
   icon: React.ReactElement | string;
   text?: string;
   variant?: Variant;
@@ -17,32 +17,36 @@ interface ButtonIconProps {
   disabled?: boolean;
   fullWidth?: boolean;
   className?: string;
+  ariaLabel?: string;
 }
 
 export default function ButtonIcon({
-  children,
   icon,
+  text,
   variant = "primary",
   size = "md",
   type = "button",
   iconPosition = "left",
-  text,
   rounded = "md",
   disabled = false,
   fullWidth = false,
   className = "",
+  ariaLabel,
 }: ButtonIconProps) {
   const baseClasses =
     "font-semibold transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const variants: Record<Variant, string> = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500",
+    primary:
+      "bg-blue-600 text-white hover:bg-blue-700 active:scale-95 focus:ring-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600",
     secondary:
-      "bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-500",
+      "bg-gray-200 text-gray-800 hover:bg-gray-300 active:scale-95 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-100",
     outline:
-      "border border-gray-400 text-gray-700 hover:bg-gray-100 focus:ring-gray-400",
-    ghost: "text-gray-700 hover:bg-gray-100 focus:ring-gray-400",
-    danger: "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500",
+      "border border-gray-400 text-gray-700 hover:bg-gray-100 active:scale-95 focus:ring-gray-400 dark:border-gray-600 dark:text-gray-200",
+    ghost:
+      "text-gray-700 hover:bg-gray-100 active:scale-95 focus:ring-gray-400 dark:text-gray-200 dark:hover:bg-gray-700",
+    danger:
+      "bg-red-600 text-white hover:bg-red-700 active:scale-95 focus:ring-red-500 dark:bg-red-500",
   };
 
   const sizes: Record<Size, string> = {
@@ -53,8 +57,8 @@ export default function ButtonIcon({
 
   const roundedStyles: Record<Rounded, string> = {
     sm: "rounded",
-    md: "rounded-xl",
-    lg: "rounded-2xl",
+    md: "rounded-lg", // padronizei igual ao Button
+    lg: "rounded-xl",
     full: "rounded-full",
   };
 
@@ -68,16 +72,16 @@ export default function ButtonIcon({
   };
 
   const iconClasses = `${iconSizes[size]} flex-shrink-0 ${
-    iconPosition === "left" ? "order-first" : "order-last"
+    iconPosition === "left" ? "order-first mr-2" : "order-last ml-2"
   }`;
 
-  // Determinar o conteúdo textual do botão
-  const buttonContent = children || text;
-
   return (
-    <button
+    <motion.button
       type={type}
       disabled={disabled}
+      aria-disabled={disabled}
+      aria-label={text ? undefined : ariaLabel}
+      whileTap={!disabled ? { scale: 0.95 } : {}}
       className={`
         ${baseClasses}
         ${variants[variant]}
@@ -89,8 +93,8 @@ export default function ButtonIcon({
       `}
     >
       {iconPosition === "left" && <span className={iconClasses}>{icon}</span>}
-      {buttonContent && <span>{buttonContent}</span>}
+      {text && <span>{text}</span>}
       {iconPosition === "right" && <span className={iconClasses}>{icon}</span>}
-    </button>
+    </motion.button>
   );
 }
