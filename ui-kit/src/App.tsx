@@ -6,10 +6,25 @@ import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
 import Toggle from "./components/input/Toggle";
 import Select from "./components/input/SelectDropDown";
+import Card, {
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+  CardImage,
+  CardAvatar,
+} from "./components/cards/Cards";
 import React from "react";
 import { RadioGroup } from "./components/input/RadioGroup";
 import { Radio } from "./components/input/Radio";
-import { FiUser, FiStar } from "react-icons/fi";
+import {
+  FiStar,
+  FiTrendingUp,
+  FiTrendingDown,
+  FiShoppingCart,
+  FiUser,
+} from "react-icons/fi";
 import { useState } from "react";
 import {
   FaArrowRight,
@@ -637,6 +652,192 @@ export default function App() {
             variant="unstyled"
             size="lg"
           />
+        </div>
+      </div>
+
+      <div className="min-h-screen bg-gray-100 p-6">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">
+            Componentes de Card
+          </h1>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* 1. Card Básico */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Card Básico</CardTitle>
+                <CardDescription>
+                  Um card simples com título e descrição básicos.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Este é um exemplo de card básico com conteúdo textual simples.
+                  Perfeito para exibir informações de forma clara e direta.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* 2. Card com Imagem */}
+            <Card className="overflow-hidden">
+              <CardImage
+                src="https://images.unsplash.com/photo-1682687980961-78fa83781450"
+                alt="Paisagem"
+                className="h-48"
+              />
+              <CardHeader>
+                <CardTitle>Card com Imagem</CardTitle>
+                <CardDescription>
+                  Imagem impressionante com conteúdo
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Cards com imagens são perfeitos para blogs, portfólios e
+                  galerias.
+                </p>
+              </CardContent>
+            </Card>
+
+            {/* 3. Card de Produto */}
+            <Card variant="elevated" hoverEffect="lift">
+              <CardImage
+                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
+                alt="Headphone"
+                className="h-48 object-cover"
+              />
+              <CardHeader>
+                <CardTitle as="h4">Headphone Premium</CardTitle>
+                <CardDescription>Som de alta qualidade</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-2xl font-bold text-gray-900">
+                    R$ 299,90
+                  </span>
+                  <div className="flex items-center">
+                    <span className="text-yellow-400">★★★★★</span>
+                    <span className="ml-1 text-sm text-gray-600">(128)</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600">
+                  Headphone wireless com cancelamento de ruído ativo.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="primary" size="sm" fullWidth>
+                  <FiShoppingCart className="mr-2" />
+                  Comprar Agora
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* 4. Card com Botão CTA */}
+            <Card variant="filled" className="text-center">
+              <CardHeader>
+                <CardTitle as="h3">Newsletter</CardTitle>
+                <CardDescription>
+                  Inscreva-se para receber nossas atualizações
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600 mb-4">
+                  Receba as últimas notícias e atualizações diretamente no seu
+                  email.
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="primary" fullWidth>
+                  Inscrever-se
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* 5. Card de Perfil */}
+            <Card variant="outlined" className="text-center">
+              <div className="flex justify-center mb-4">
+                <CardAvatar
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e"
+                  alt="Maria Santos"
+                  size="lg"
+                />
+              </div>
+              <CardHeader>
+                <CardTitle as="h3">Maria Santos</CardTitle>
+                <CardDescription>Designer UX/UI</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">128</div>
+                    <div className="text-sm text-gray-600">Projetos</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">2.4K</div>
+                    <div className="text-sm text-gray-600">Seguidores</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-gray-900">348</div>
+                    <div className="text-sm text-gray-600">Seguindo</div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" size="sm" fullWidth>
+                  <FiUser className="mr-2" />
+                  Ver Perfil
+                </Button>
+              </CardFooter>
+            </Card>
+
+            {/* 6. Card de Estatística */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Métricas do Mês</CardTitle>
+                <CardDescription>Desempenho geral do negócio</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Vendas</div>
+                      <div className="text-xl font-bold text-gray-900">
+                        R$ 24.568
+                      </div>
+                    </div>
+                    <div className="flex items-center text-green-600">
+                      <FiTrendingUp className="mr-1" />
+                      +12%
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Usuários</div>
+                      <div className="text-xl font-bold text-gray-900">
+                        1.248
+                      </div>
+                    </div>
+                    <div className="flex items-center text-green-600">
+                      <FiTrendingUp className="mr-1" />
+                      +8%
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <div className="text-sm text-gray-600">Conversão</div>
+                      <div className="text-xl font-bold text-gray-900">
+                        4.8%
+                      </div>
+                    </div>
+                    <div className="flex items-center text-red-600">
+                      <FiTrendingDown className="mr-1" />
+                      -2%
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
