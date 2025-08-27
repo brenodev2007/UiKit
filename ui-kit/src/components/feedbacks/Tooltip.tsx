@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 
 interface TooltipProps {
   content: React.ReactNode;
@@ -37,11 +37,11 @@ export default function Tooltip({
   };
 
   const hideTooltip = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsVisible(false);
   };
+
+  const id = `tooltip-${Math.random().toString(36).substr(2, 9)}`;
 
   return (
     <div
@@ -50,11 +50,13 @@ export default function Tooltip({
       onMouseLeave={hideTooltip}
       onFocus={showTooltip}
       onBlur={hideTooltip}
+      aria-describedby={id}
     >
       {children}
 
       {isVisible && (
         <div
+          id={id}
           className={`
             absolute z-50 px-3 py-2 text-sm text-white bg-gray-900 rounded-md shadow-lg
             ${positionStyles[position]}
@@ -63,8 +65,6 @@ export default function Tooltip({
           role="tooltip"
         >
           {content}
-
-          {/* Tooltip arrow */}
           <div
             className={`
               absolute w-2 h-2 bg-gray-900 transform rotate-45

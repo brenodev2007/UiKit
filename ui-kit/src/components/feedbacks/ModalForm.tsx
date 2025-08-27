@@ -2,17 +2,22 @@ import { useState } from "react";
 import Modal from "./Modal";
 import Button from "../button/Button";
 
+interface Field {
+  name: string;
+  label: string;
+  type?: "text" | "email" | "textarea";
+  required?: boolean;
+  placeholder?: string;
+}
+
 interface FormModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: FormData) => void;
+  onSubmit: (data: Record<string, string>) => Promise<void> | void;
   title: string;
-}
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
+  fields?: Field[];
+  submitLabel?: string;
+  cancelLabel?: string;
 }
 
 export default function FormModal({
@@ -20,18 +25,27 @@ export default function FormModal({
   onClose,
   onSubmit,
   title,
+  fields = [
+    { name: "name", label: "Nome", type: "text", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    { name: "message", label: "Mensagem", type: "textarea", required: true },
+  ],
+  submitLabel = "Enviar",
+  cancelLabel = "Cancelar",
 }: FormModalProps) {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
-    onClose();
-    setFormData({ name: "", email: "", message: "" });
+    setLoading(true);
+    try {
+      await onSubmit(formData);
+      onClose();
+      setFormData({});
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -46,66 +60,52 @@ export default function FormModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="md">
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Nome
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {fields.map((field) => (
+          <div key={field.name}>
+            <label
+              htmlFor={field.name}
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
+              {field.label}
+            </label>
 
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="message"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Mensagem
-          </label>
-          <textarea
-            id="message"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-            rows={4}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+            {field.type === "textarea" ? (
+              <textarea
+                id={field.name}
+                name={field.name}
+                value={formData[field.name] || ""}
+                onChange={handleChange}
+                required={field.required}
+                placeholder={field.placeholder}
+                rows={4}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                           bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+                           focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            ) : (
+              <input
+                type={field.type || "text"}
+                id={field.name}
+                name={field.name}
+                value={formData[field.name] || ""}
+                onChange={handleChange}
+                required={field.required}
+                placeholder={field.placeholder}
+                autoComplete={field.name}
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                           bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+                           focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            )}
+          </div>
+        ))}
 
         <div className="flex justify-end space-x-3 pt-4">
           <Button type="button" variant="outline" onClick={onClose}>
-            Cancelar
+            {cancelLabel}
           </Button>
-          <Button type="submit" variant="primary">
-            Enviar
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? "Enviando..." : submitLabel}
           </Button>
         </div>
       </form>
