@@ -5,9 +5,11 @@ import Checkbox from "./components/input/CheckBox";
 import Textarea from "./components/input/Textarea";
 import TextField from "./components/input/TextField";
 import Toggle from "./components/input/Toggle";
+import Select from "./components/input/SelectDropDown";
 import React from "react";
 import { RadioGroup } from "./components/input/RadioGroup";
 import { Radio } from "./components/input/Radio";
+import { FiUser, FiStar } from "react-icons/fi";
 import { useState } from "react";
 import {
   FaArrowRight,
@@ -44,6 +46,43 @@ export default function App() {
     sms: false,
     push: false,
   });
+
+  const [multipleValues, setMultipleValues] = useState({
+    user: "",
+    category: "",
+    status: "",
+  });
+
+  const users = [
+    { value: "1", label: "João Silva", icon: <FiUser /> },
+    { value: "2", label: "Maria Santos", icon: <FiUser /> },
+    { value: "3", label: "Pedro Costa", icon: <FiUser /> },
+  ];
+
+  const categories = [
+    { value: "tech", label: "Tecnologia" },
+    { value: "design", label: "Design" },
+    { value: "marketing", label: "Marketing" },
+    { value: "support", label: "Suporte" },
+  ];
+
+  const statusOptions = [
+    {
+      value: "active",
+      label: "Ativo",
+      icon: <FiStar className="text-green-500" />,
+    },
+    {
+      value: "inactive",
+      label: "Inativo",
+      icon: <FiStar className="text-gray-400" />,
+    },
+    {
+      value: "pending",
+      label: "Pendente",
+      icon: <FiStar className="text-yellow-500" />,
+    },
+  ];
   const [selectedValue, setSelectedValue] = React.useState("option1");
 
   const handleOptionChange = (option: string, isChecked: boolean) => {
@@ -372,6 +411,7 @@ export default function App() {
           </p>
         </div>
       </div>
+
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-md mx-auto space-y-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-6">
@@ -511,6 +551,92 @@ export default function App() {
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-md mx-auto space-y-6">
+          <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            Select Dropdown
+          </h1>
+
+          {/* Select básico */}
+          <Select
+            options={categories}
+            value={selectedValue}
+            onChange={(value) => setSelectedValue(value)}
+            placeholder="Selecione uma categoria"
+            label="Categoria"
+          />
+
+          {/* Select com ícones */}
+          <Select
+            options={users}
+            value={multipleValues.user}
+            onChange={(value) =>
+              setMultipleValues({ ...multipleValues, user: value })
+            }
+            placeholder="Selecione um usuário"
+            label="Usuário"
+            variant="filled"
+          />
+
+          {/* Select searchable */}
+          <Select
+            options={users}
+            value={multipleValues.user}
+            onChange={(value) =>
+              setMultipleValues({ ...multipleValues, user: value })
+            }
+            placeholder="Busque um usuário..."
+            label="Buscar usuário"
+            searchable
+            clearable
+            variant="outline"
+            rounded="lg"
+          />
+
+          {/* Select com status */}
+          <Select
+            options={statusOptions}
+            value={multipleValues.status}
+            onChange={(value) =>
+              setMultipleValues({ ...multipleValues, status: value })
+            }
+            placeholder="Selecione o status"
+            label="Status"
+            variant="flushed"
+          />
+
+          {/* Select com erro */}
+          <Select
+            options={categories}
+            placeholder="Selecione uma opção"
+            label="Campo obrigatório"
+            error="Este campo é obrigatório"
+            required
+          />
+
+          {/* Select desabilitado */}
+          <Select
+            options={categories}
+            placeholder="Opção desabilitada"
+            label="Desabilitado"
+            disabled
+            helperText="Este campo está desabilitado"
+          />
+
+          {/* Select customizado */}
+          <Select
+            options={categories}
+            placeholder="Selecione..."
+            label="Personalizado"
+            className="custom-select"
+            dropdownClassName="bg-gray-900 text-white"
+            optionClassName="hover:bg-gray-800 text-white"
+            variant="unstyled"
+            size="lg"
+          />
         </div>
       </div>
     </div>
