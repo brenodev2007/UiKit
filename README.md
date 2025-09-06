@@ -34,12 +34,15 @@ Built with accessibility, performance, and simplicity in mind.
 ♿ Accessible by Default – WAI-ARIA compliant
 
 📦 Installation
+```
 npm install lumi-ui
 # or
 yarn add lumi-ui
+```
 
 
 🛠️ Usage
+```
 import { Button } from "lumi-ui";
 
 export default function App() {
@@ -49,13 +52,15 @@ export default function App() {
     </div>
   );
 }
-
+```
 🎨 Theming
+```
 import { ThemeProvider } from "lumi-ui";
 
 <ThemeProvider theme="dark">
   <App />
 </ThemeProvider>
+```
 
 🤝 Contributing
 
