@@ -14,6 +14,7 @@
   <rect width="120" height="40" rx="8" fill="#4F46E5"/>
   <text x="60" y="27" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="white">LumiUI</text>
 </svg>
+```
 
 🌟 About
 
